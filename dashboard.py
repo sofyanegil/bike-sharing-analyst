@@ -4,7 +4,8 @@ import seaborn as sns
 import streamlit as st
 from babel.numbers import format_currency
 sns.set(style='dark')
-
+# set title web
+st.set_page_config(page_title='Dashboard Bike Sharing', page_icon='🚲', layout='wide', initial_sidebar_state='auto')
 def create_daily_users(df):
   daily_users_df = df.resample(rule='D', on='dateday').agg({ 
     'registered': 'sum',
