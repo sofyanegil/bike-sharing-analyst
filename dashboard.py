@@ -4,8 +4,7 @@ import seaborn as sns
 import streamlit as st
 from babel.numbers import format_currency
 sns.set(style='dark')
-# set title web
-st.set_page_config(page_title='Dashboard Bike Sharing', page_icon='🚲', layout='wide', initial_sidebar_state='auto')
+
 def create_daily_users(df):
   daily_users_df = df.resample(rule='D', on='dateday').agg({ 
     'registered': 'sum',
@@ -32,7 +31,7 @@ def create_weather_users(df):
     'casual': 'sum',
     'registered': 'sum',
     'total': 'sum'
-  }).sort_values(by='total', ascending=False)
+  }).sort_values(by='total', ascending=True)
   return weather_users_df
 
 def create_season_users(df):
@@ -40,7 +39,7 @@ def create_season_users(df):
     'casual': 'sum',
     'registered': 'sum',
     'total': 'sum'
-  }).sort_values(by='total', ascending=False)
+  }).sort_values(by='total', ascending=True)
   return season_users_df
 
 def create_hour_users(df):
@@ -48,7 +47,7 @@ def create_hour_users(df):
     'casual': 'sum',
     'registered': 'sum',
     'total': 'sum'
-  }).sort_values(by='total', ascending=False)
+  }).sort_values(by='total', ascending=True)
   return hour_users_df
 
 all_df = pd.read_csv('main_data.csv')
@@ -65,7 +64,7 @@ max_date = all_df['dateday'].max()
 with st.sidebar:
     st.title('Dashboard')
 
-    st.image("https://scontent.fbdo3-1.fna.fbcdn.net/v/t39.30808-6/302350418_585681089826929_7189388207338572555_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=axmqul8-KjIAX8tmkzn&_nc_zt=23&_nc_ht=scontent.fbdo3-1.fna&oh=00_AfC1vpK0qwuECeS0eYCzTjzos82D9t6YoES7h4TwEZBjBw&oe=65B70139")
+    st.image("https://img.freepik.com/premium-vector/white-bike-rental-logotype-with-pin-concept-biking-bycicle-sale-rent-bike-trip-company-mark-repair-guide-isolated-black-background-flat-style-modern-brand-design-vector-illustration_117142-415.jpg?w=1060")
     
     start_date, end_date = st.date_input(
         label='Rentang Waktu',
@@ -161,7 +160,7 @@ with tabs3:
   plt.pie(
     type_users_df,
     labels=('Casual', 'Registered'),
-    colors=['#FF6F61', '#66B2FF'],
+    colors = ['#96badf', '#2C4767'],
     autopct='%1.1f%%',
     textprops={'fontsize': 14, 'color': 'black'},
     startangle=90,
@@ -181,11 +180,14 @@ with tabs4:
   fig, ax = plt.subplots(figsize=(12, 10))
   ax.yaxis.set_major_formatter('{x:,.0f}')
   sns.set_style('whitegrid')
-  sns.barplot(x=workingday_users_df.index, y=workingday_users_df['total'], palette='Set2')
+  sns.barplot(x=workingday_users_df.index, y=workingday_users_df['total'], color='#96badf')
   plt.title("Perbandingan Penggunaan Bike Sharing Pada Hari Kerja dan Bukan Hari Kerja")
   plt.xlabel(None)
   plt.ylabel('Users')
+  highlight_color = '#2C4767'
+  ax.patches[-1].set_facecolor(highlight_color)
   st.pyplot(fig)
+  
 
 with tabs5:
   st.header('Bagaimana perbandingan penggunaan bike sharing berdasarkan keadaan cuaca?')
@@ -198,10 +200,12 @@ with tabs5:
 
   ax.yaxis.set_major_formatter('{x:,.0f}')
   sns.set_style('whitegrid')
-  sns.barplot(x=weather_users_df.index, y=weather_users_df['total'], palette='Set2')
+  sns.barplot(x=weather_users_df.index, y=weather_users_df['total'], color='#96badf')
   plt.title("Perbandingan Penggunaan Bike Sharing Berdasarkan Keadaan Cuaca")
   plt.xlabel(None)
   plt.ylabel('Users')
+  highlight_color = '#2C4767'
+  ax.patches[-1].set_facecolor(highlight_color)
   st.pyplot(fig)
 
 with tabs6:
@@ -214,10 +218,12 @@ with tabs6:
   fig,ax = plt.subplots(figsize=(12, 10))
   ax.yaxis.set_major_formatter('{x:,.0f}')
   sns.set_style('whitegrid')
-  sns.barplot(x=season_users_df.index, y=season_users_df['total'], palette='Set2')
+  sns.barplot(x=season_users_df.index, y=season_users_df['total'], color='#96badf')
   plt.title("Perbandingan Penggunaan Bike Sharing Berdasarkan Keadaan Musim")
   plt.xlabel(None)
   plt.ylabel('Users')
+  highlight_color = '#2C4767'
+  ax.patches[-1].set_facecolor(highlight_color)
   st.pyplot(fig)
 
 with tabs7:
@@ -231,10 +237,12 @@ with tabs7:
   ax.xaxis.set_major_formatter('{x:,.0f}')
   sns.despine(fig)
   sns.set_style('whitegrid')
-  sns.barplot(x=hour_users_df['total'], y=hour_users_df.index, palette='Set2', order=hour_users_df.index, orient='h')
+  sns.barplot(x=hour_users_df['total'], y=hour_users_df.index, color='#96badf', order=hour_users_df.index, orient='h')
   plt.title("Perbandingan Penggunaan Bike Sharing Berdasarkan Jam")
   plt.xlabel(None)
   plt.ylabel('Users')
+  highlight_color = '#2C4767'
+  ax.patches[-1].set_facecolor(highlight_color)
   st.pyplot(fig)
 
 st.caption('sofyanegi, &copy; 2024')
